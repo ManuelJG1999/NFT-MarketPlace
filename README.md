@@ -1,4 +1,5 @@
 NFT Marketplace - Solidity Smart Contract
+
 **Contract Description**
 This Solidity smart contract represents a basic NFT (Non-Fungible Token) marketplace built on top of the ERC-721 standard using OpenZeppelin's implementation. The main functionality of this contract includes minting, listing, buying, and canceling the sale of NFTs. Users can create unique tokens, put them up for sale, purchase available tokens, and manage sales as the owner of the NFTs. Additionally, the contract includes administrative functions for pausing the marketplace and withdrawing contract funds in emergencies.
 

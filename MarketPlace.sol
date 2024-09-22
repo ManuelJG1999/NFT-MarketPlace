@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract NFTMarketplace is ERC721 {
     // Incremental ID for minting NFTs
     uint256 private _nextTokenId = 1;
+    address private owner;
+    bool private paused;
     
     // Struct to represent each item for sale
     struct NFTItem {
@@ -89,5 +91,39 @@ contract NFTMarketplace is ERC721 {
 
         NFTItem storage item = nftItems[tokenId];
         item.isForSale = false;
+
+        //Emergency STOP  Design Pattern
+
+    }
+
+      modifier onlyOwner() {
+        require(msg.sender == owner, "You are not the owner");
+        _;
+    }
+
+    modifier whenPaused() {
+        require(paused, "The contract is not paused");
+        _;
+    }
+
+    event Paused();
+    event Unpaused();
+		event FundsWithdrawn(address owner, uint amount);	
+
+    function pause() public onlyOwner {
+        paused = true;
+        emit Paused();
+    }
+
+    function unpause() public onlyOwner {
+        paused = false;
+        emit Unpaused();
+    }
+
+    function emergencyWithdraw() public onlyOwner whenPaused {
+        uint balance = address(this).balance;
+        (bool sent, ) = owner.call{value: balance}("");
+        require(sent, "Fallo al enviar Ether");
+        emit FundsWithdrawn(owner, balance);
     }
 }

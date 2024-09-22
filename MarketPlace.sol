@@ -123,7 +123,7 @@ contract NFTMarketplace is ERC721 {
     function emergencyWithdraw() public onlyOwner whenPaused {
         uint balance = address(this).balance;
         (bool sent, ) = owner.call{value: balance}("");
-        require(sent, "Fallo al enviar Ether");
+        require(sent, "Failed to send Ether");
         emit FundsWithdrawn(owner, balance);
     }
 }
